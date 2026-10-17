@@ -32,11 +32,14 @@ function Booking({ className='', children, label, arrow=true, href }) {
   </a>;
 }
 function OfficialPhoto({src,alt,kind='',className='',loading='lazy'}) {
+  if (!src && kind === 'hero' && site.logo) {
+    return <div className={`visual ${className}`}><div className="branded-hero-logo"><div className="hero-emblem-halo" aria-hidden="true"/><img src={asset(site.logo)} className="hero-emblem" alt="" decoding="async" aria-hidden="true"/></div></div>;
+  }
   return <div className={`visual ${className} ${src?'visual-has-photo':''}`}>
     {src ? <img src={asset(src)} alt={alt} loading={loading} decoding="async" /> :
       <div className={`visual-art visual-${kind || 'editorial'}`} aria-label="Espaço reservado para fotografia oficial">
         <div className="visual-circles" aria-hidden="true"/><div className="visual-frame" aria-hidden="true" />
-        <span className="visual-monogram" aria-hidden="true">GH</span>
+        {site.logo ? <img className="visual-watermark" src={asset(site.logo)} alt="" aria-hidden="true" loading="lazy"/> : <span className="visual-monogram" aria-hidden="true">GH</span>}
         <span className="visual-note">FOTOGRAFIA OFICIAL<br/>A INSERIR</span>
       </div>}
   </div>;
@@ -109,7 +112,7 @@ function Experience() {
 }
 function Team() {
   return <section id="equipe" className="team section-pad"><div className="container"><div className="team-top reveal"><SectionHeading kicker="NOSSA EQUIPE">O TALENTO POR<br/>TRÁS DO <em>VISUAL.</em></SectionHeading><p>Conheça quem está por trás dos atendimentos da Gaúchos Hair Itu.</p></div>{site.professionals.length ? <div className="team-grid">{site.professionals.map((p,i)=><article className="team-card reveal" key={`${p.name}-${i}`}><OfficialPhoto src={p.image} alt={p.name}/><div className="team-info"><p className="kicker">{p.role}</p><h3>{p.name}</h3><p>{p.description}</p><Booking href={p.bookingUrl || undefined} className="button-sm">Consultar horário</Booking></div></article>)}</div> :
-  <div className="team-pending reveal"><div className="team-pending-mark" aria-hidden="true">GH</div><div><p className="kicker">EM PREPARAÇÃO</p><p>Os nomes e retratos oficiais dos profissionais serão adicionados aqui. Enquanto isso, acompanhe a equipe pelo Instagram da barbearia.</p><a className="under-link" target="_blank" rel="noreferrer" href={site.instagram}>Conhecer no Instagram <ArrowUpRight size={17}/></a></div></div>}</div></section>;
+  <div className="team-pending reveal"><div className="team-pending-mark" aria-hidden="true"><img src={asset(site.logo)} alt="" style={{width:"100%",maxWidth:140,opacity:.76,objectFit:"contain"}} /></div><div><p className="kicker">EM PREPARAÇÃO</p><p>Os nomes e retratos oficiais dos profissionais serão adicionados aqui. Enquanto isso, acompanhe a equipe pelo Instagram da barbearia.</p><a className="under-link" target="_blank" rel="noreferrer" href={site.instagram}>Conhecer no Instagram <ArrowUpRight size={17}/></a></div></div>}</div></section>;
 }
 function Lightbox({items,index,setIndex,onClose}) {
   const dialog=useRef(null),start=useRef(null);
