@@ -63,4 +63,6 @@ Abra `site/src/content.js` para atualizar:
 
 Para fotos, prefira WebP/AVIF e coloque os arquivos em `site/public/images/`.
 
-**Antes de apresentar como site oficial:** confirmar identidade visual, serviços, profissionais, endereço, horário, avaliações e link do AppBarber. Até isso acontecer, o site não inventa essas informações e oferece consulta pelo Instagram.
+**Identidade visual:** logotipo oficial fornecido pelo cliente, sem fundo, em `site/public/images/logo-original.svg`. A paleta foi alinhada ao fundo da logo original: grafite amarronzado (`#261f22`), preto profundo (`#151114`), cinza-chumbo, prata e branco frio. Não utilizar verde e dourado como cores institucionais.
+
+**Antes de apresentar como site oficial:** confirmar serviços, profissionais, endereço, horário, avaliações e link do AppBarber. Até isso acontecer, o site não inventa essas informações e oferece consulta pelo Instagram.
