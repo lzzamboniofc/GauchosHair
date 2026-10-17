@@ -1,11 +1,11 @@
 /**
  * ÚNICA FONTE DE CONTEÚDO EDITÁVEL.
  * Dados não confirmados ficam vazios e NÃO aparecem como fatos no site.
- * As cores e o monograma são uma proposta visual, não identidade oficial.
+ * Logotipo oficial fornecido; identidade cromática baseada no fundo da imagem original.
  */
 export const site = {
   brand: 'Gaúchos Hair Itu',
-  logo: '', // Ex.: '/images/logo-oficial.webp' (logotipo da barbearia, com autorização)
+  logo: '/images/logo-original.svg', // Logotipo original fornecido
   instagram: 'https://www.instagram.com/gauchoshairitu/',
   appbarber: '', // LINK ESPECÍFICO DO ESTABELECIMENTO, não a página genérica do AppBarber
   whatsapp: '', // Apenas números verificados, formato 5511999999999
