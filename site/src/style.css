@@ -69,3 +69,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline-color:#efeaf1}
 @media(max-width:1000px){.header-inner{height:78px}.brand-official{width:53px;height:57px}.hero .hero-emblem{right:-7%;opacity:.46;width:min(61vw,470px);transform:translateY(-46%)}.hero-screen{background:linear-gradient(90deg,rgba(17,13,17,.98) 0%,rgba(24,19,23,.91) 45%,rgba(25,20,23,.37) 100%),linear-gradient(0deg,rgba(12,9,11,.64),transparent 38%)}}
 @media(max-width:680px){.brand-official{width:47px;height:53px}.brand-copy strong{font-size:19px}.hero .hero-emblem{right:-22%;top:47%;width:90vw;max-width:none;opacity:.22}.hero-screen{background:linear-gradient(90deg,rgba(17,13,17,.97),rgba(17,13,17,.78)),linear-gradient(0deg,rgba(12,9,11,.4),transparent 50%)}.hero-body{padding-top:90px}.visual-watermark{opacity:.28}}
 @media(max-width:410px){.brand-official{width:43px;height:49px}.brand-copy strong{font-size:17px}.brand-copy small{font-size:7px}.header-inner{padding:0 17px}}
+
+/* Contraste dos destaques sobre superfícies claras. */
+.about h2 em,.team h2 em,.contact h2 em{color:#66525f}
+.experience-copy h2 em{color:#483740}
+.contact .kicker{color:#72636e}
+.about .section-description,.team .section-description,.contact .section-description{color:#544b54}
+.contact .contact-detail svg{color:#695967}
