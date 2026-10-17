@@ -1,0 +1,118 @@
+name: Compilar site na raiz (main / root)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'vite.config.js'
+      - '.github/workflows/build-root.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  build-root:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter repositório
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Preparar projeto para publicação estática
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f site/index.html ]; then
+            mkdir -p site
+            test -f index.html
+            test -f src/main.jsx
+            test -d public
+            mv index.html site/index.html
+            mv src site/src
+            mv public site/public
+          fi
+          test -f site/index.html
+          test -f site/src/main.jsx
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar dependências
+        run: npm install --no-audit --no-fund
+
+      - name: Compilar React para GitHub Pages
+        env:
+          VITE_BASE: /GauchosHair/
+        run: npm run build
+
+      - name: Publicar conteúdo compilado na raiz
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a dist/. .
+          touch .nojekyll
+          node <<'NODE'
+          const fs = require('node:fs');
+          const html = fs.readFileSync('index.html', 'utf8');
+          if (!html.includes('/GauchosHair/assets/')) {
+            throw new Error('index.html não usa os caminhos esperados do GitHub Pages');
+          }
+          if (!fs.existsSync('assets') || fs.readdirSync('assets').length === 0) {
+            throw new Error('Arquivos JavaScript/CSS não foram compilados');
+          }
+          console.log('Site estático validado em main / (root)');
+          NODE
+
+      - name: Commitar site estático em main / (root)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Publicar HTML estático compilado na main / root"
+            git push origin HEAD:main
+          fi
+
+      - name: Configurar GitHub Pages para main / (root)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh api "repos/${GITHUB_REPOSITORY}/pages" >/dev/null 2>&1; then
+            if gh api --method PUT "repos/${GITHUB_REPOSITORY}/pages" \
+              -f build_type=legacy -f 'source[branch]=main' -f 'source[path]=/'; then
+              echo "Fonte de publicação configurada: main / (root)."
+            else
+              echo "::warning::Não foi possível modificar o Pages por API. Configure manualmente Settings > Pages > Deploy from a branch > main > /(root)."
+            fi
+          else
+            if gh api --method POST "repos/${GITHUB_REPOSITORY}/pages" \
+              -f build_type=legacy -f 'source[branch]=main' -f 'source[path]=/'; then
+              echo "GitHub Pages ativado: main / (root)."
+            else
+              echo "::warning::Não foi possível ativar Pages por API. Configure manualmente Settings > Pages > Deploy from a branch > main > /(root)."
+            fi
+          fi
+
+      - name: Solicitar atualização da publicação Pages
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds" >/dev/null; then
+            echo "Build do GitHub Pages solicitado."
+          else
+            echo "::warning::O site está compilado na raiz, mas a publicação Pages pode precisar ser reexecutada nas configurações."
+          fi
