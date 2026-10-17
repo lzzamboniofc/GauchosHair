@@ -1,3 +1,13 @@
 import { defineConfig } from 'vite';
-// Para GitHub Pages em /NOME-DO-REPOSITORIO/, defina VITE_BASE=/NOME-DO-REPOSITORIO/ no build.
-export default defineConfig({base: process.env.VITE_BASE || '/'});
+
+// Código-fonte em /site. A raiz do repositório contém o site estático
+// já compilado para GitHub Pages: main / (root).
+export default defineConfig({
+  root: 'site',
+  publicDir: 'public',
+  base: process.env.VITE_BASE || '/GauchosHair/',
+  build: {
+    outDir: '../dist',
+    emptyOutDir: true
+  }
+});
